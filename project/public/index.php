@@ -1,8 +1,16 @@
 <?php
 require_once __DIR__.'../../vendor/autoload.php';
+
+use Silex\Provider\TwigServiceProvider;
+
+date_default_timezone_set('Europe/Moscow');
+
 $app = new Silex\Application();
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'../../views'
+
+$app['debug'] = true;
+
+$app->register(new TwigServiceProvider(), array(
+    'twig.path' => __DIR__ . '/../views',
 ));
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html');
