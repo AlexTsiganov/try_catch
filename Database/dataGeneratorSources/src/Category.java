@@ -45,9 +45,6 @@ public class Category {
         data.add(new RowCategory("'Телевидение'", "null"));
         data.add(new RowCategory("'Цифровое телевидение'", "null"));
         data.add(new RowCategory("'Телефония'", "null"));
-
-        // доделать
-
     }
 
     public static void main(String[] args) throws IOException {
