@@ -1,4 +1,4 @@
-`wb_test_db.mwb` - содержит схему бд для Workbanch.
+`wb_test_db.mwb` - содержит схему бд для Workbench.
 
 `sales_db.sql` - выполняет следующее:
 * удяляет и создает заного базу
