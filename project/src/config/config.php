@@ -8,7 +8,7 @@ return [
         'dbhost' => 'localhost',
         'dbname' => 'sales_test_db',
         'user' => 'root',
-        'password' => 'Alex03636',
+        'password' => '',
         'unix_socket' => '/tmp/mysql.sock',
         'charset' => 'utf8'
     ],
