@@ -24,22 +24,33 @@ class ApiController extends AbstractController
     {
       /*
       SELECT
-       `seller`.`id` AS `seller_id`,
-       SUM(`perchased_services`.`baked_price`) AS `sells`
+       `seller`.`id` AS `sid`,
+       FORMAT(SUM(`purchased_services`.`backed_price`) / 100, 2) AS `sells`,
+       SUM(`purchased_services`.`amount`) AS `number_of_sold_services`
       FROM
-       `sales_db.sql`.`seller`
-       LEFT JOIN `sales_db.sql`.`order` ON `seller`.`id` = `order`.`seller_id`
-       LEFT JOIN `sales_db.sql`.`perchased_services` ON `perchased_services`.`order_id` = `order`.`id`
+       `old-hotel_rt-dev`.`seller`
+       LEFT JOIN `old-hotel_rt-dev`.`order` ON `order`.seller_id = `seller`.`id`
+       LEFT JOIN `old-hotel_rt-dev`.`purchased_services` ON `purchased_services`.`order_id` = `order`.`id`
       WHERE
-       `order`.`date` BETWEEN '2015-02-22 00:00:00' AND '2015-02-22 23:59:59'
+       `order`.`date` BETWEEN '2015-12-05 00:00:00' AND '2015-12-05 23:59:59'
       GROUP BY
        `seller`.`id`
       */
         if ($saller_id == -1) {
-          $sql = 'SELECT s.*, p.*, SUM(purchased_services.baked_price) AS sells FROM seller
-          LEFT JOIN order ON seller.id = order.seller_id
-          LEFT JOIN perchased_services ON perchased_services.order_id = order.id
-          GROUP BY seller.id';
+          $sql = '
+          SELECT
+           `seller`.`id` AS `sid`,
+           FORMAT(SUM(`purchased_services`.`backed_price`) / 100, 2) AS `sells`,
+           SUM(`purchased_services`.`amount`) AS `number_of_sold_services`
+          FROM
+           `old-hotel_rt-dev`.`seller`
+           LEFT JOIN `sales_test_db`.`order` ON `order`.`seller_id` = `seller`.`id`
+           LEFT JOIN `sales_test_db`.`purchased_services` ON `purchased_services`.`order_id` = `order`.`id`
+          WHERE
+           `sales_test_db`.`order`.`date` BETWEEN '2015-12-05 00:00:00' AND '2015-12-05 23:59:59'
+          GROUP BY
+           `seller`.`id`
+          ';
           $result = $this->app['db']->fetchAll($sql);
         }
         else {

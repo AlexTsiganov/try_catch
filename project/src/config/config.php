@@ -9,7 +9,6 @@ return [
         'dbname' => 'sales_test_db',
         'user' => 'root',
         'password' => '',
-        'unix_socket' => '/tmp/mysql.sock',
         'charset' => 'utf8'
     ],
     // Twig config
