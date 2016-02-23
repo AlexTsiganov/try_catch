@@ -7,4 +7,4 @@
 \. C:\Users\Pavel\Desktop\try_catch\Database\insertion_scripts\4_client.sql
 \. C:\Users\Pavel\Desktop\try_catch\Database\insertion_scripts\5_seller.sql
 \. C:\Users\Pavel\Desktop\try_catch\Database\insertion_scripts\6_orders.sql
--- \. C:\Users\Pavel\Desktop\try_catch\Database\insertion_scripts\7_purchased.sql
+\. C:\Users\Pavel\Desktop\try_catch\Database\insertion_scripts\7_purchased.sql
