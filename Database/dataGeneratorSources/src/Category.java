@@ -18,14 +18,14 @@ public class Category {
     private FileOutputStream out;
 
     final String insert = "INSERT INTO ";
-    String db = "sales_test_db";
+    String db = "`old-hotel_rt-dev`";
     String table;
     String vals;
 
     Set<RowCategory> data = new LinkedHashSet<>();
 
     private void generateCategories() throws IOException {
-        out = new FileOutputStream("categories.sql");
+        out = new FileOutputStream("1_categories.sql");
         OutputStreamWriter osw = new OutputStreamWriter(out, Charset.forName("UTF-8"));
         table = db + ".category ";
         vals = "(name, pid) VALUES (";

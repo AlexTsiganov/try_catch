@@ -20,9 +20,9 @@ class RowService {
 
 public class Service {
     private FileOutputStream out;
-    final String insert = "INSERT INTO sales_test_db.";
+    final String insert = "INSERT INTO `old-hotel_rt-dev`.";
 
-    final String filename = "services.sql";
+    final String filename = "2_services.sql";
     final String table = "service";
     final String vals = " (price_per_month, category_id, name, connection_cost) VALUES (";
 

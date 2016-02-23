@@ -19,9 +19,9 @@ class RowOrder {
 
 public class Order {
     private FileOutputStream out;
-    final String insert = "INSERT INTO `sales_test_db`.";
+    final String insert = "INSERT INTO `old-hotel_rt-dev`.";
 
-    final String filename = "orders.sql";
+    final String filename = "6_orders.sql";
     final String table = "`order`";
     final String vals = " (date, client_id, seller_id) VALUES (";
 

@@ -19,9 +19,9 @@ class RowPurchased {
 
 public class PurchasedServices {
     private FileOutputStream out;
-    final String insert = "INSERT INTO `sales_test_db`.";
+    final String insert = "INSERT INTO `old-hotel_rt-dev`.";
 
-    final String filename = "purchased.sql";
+    final String filename = "7_purchased.sql";
     final String table = "`purchased_services`";
     final String vals = " (order_id, service_id, backed_price) VALUES (";
 
@@ -125,7 +125,7 @@ public class PurchasedServices {
 
 class DBConnector {
     // JDBC URL, username and password of MySQL server
-    private static final String url = "jdbc:mysql://localhost:3306/sales_test_db";
+    private static final String url = "jdbc:mysql://localhost:3306/old-hotel_rt-dev";
     private static final String user = "admin";
     private static final String password = "admin";
 
