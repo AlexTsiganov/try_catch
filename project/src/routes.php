@@ -15,11 +15,13 @@ $app['api.controller'] = $app->share(function() use ($app) {
 
 // define controllers for a home
 $home = $app['controllers_factory'];
-$home->get('/', "home.controller:home");
+$home->get('/', "home.controller:home")->bind('home');
 
 $api = $app['controllers_factory'];
 $api->get('/', "api.controller:api");
-$api->get('/statistic/saller', "api.controller:statistic_saller");
+$api->get('/statistic-seller', "api.controller:statistic_seller");
+$api->get('/maxDate', "api.controller:maxDate");
+$api->get('/services', "api.controller:services");
 
 $app->mount('/', $home);
 $app->mount('/api', $api);

@@ -9,10 +9,7 @@ class HomeController extends AbstractController
 {
     public function home(Request $request)
     {
-      echo "hell";
-      $variable = "world!";
-      return "asdas";
-      //return $app['twig']->render('index.html', array('variable' => $variable));
+      return $this->app['twig']->render('index.html');
     }
 
     public function about()

@@ -5,14 +5,18 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use code\models\StatisticModel;
 
 class AbstractController
 {
+
     protected $app;
+    protected $model;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->model = new StatisticModel($app);
     }
 
     protected function redirect($url, $statusCode = 302)
