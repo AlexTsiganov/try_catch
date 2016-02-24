@@ -15,7 +15,7 @@ Just like Symfony2, Silex is mostly a controller framework. It provides you with
 
 ***
 
-### simple API methods:
+### simple API methods(dev):
 
 1. Get last data from order tables: `GET api/maxDate`
 2. Get services: `GET api/services`

@@ -12,7 +12,7 @@ if (!$test_rt_is_live) {
             'dbhost' => 'localhost',
             'dbname' => 'sales_test_db',
             'user' => 'root',
-            'password' => 'Alex03636',
+            'password' => '***',
             'unix_socket' => '/tmp/mysql.sock',
             'charset' => 'utf8'
         ],
@@ -26,11 +26,11 @@ if (!$test_rt_is_live) {
         'debug' => $test_rt_is_debug,
         // Database config
         'database' => [
-            'host' => 'old-hotel.mysql',
-            'dbname' => 'old-hotel_rt-dev',
+            'host' => '***',
+            'dbname' => '***',
             'charset' => 'utf8',
-            'user' => 'old-hotel_mysql',
-            'password' => 'G8sksoi+',
+            'user' => '***',
+            'password' => '***',
             'driverOptions' => array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"
             )
