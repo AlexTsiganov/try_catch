@@ -1,5 +1,5 @@
 
-# [Try catch](http://www.test-rt.codewell.ru/)
+# [Try catch](http://www.rt.codewell.ru/)
 
 Тестовое задание для кейса «Разработка  ПО для информационного табло в отдел продаж»     
 
