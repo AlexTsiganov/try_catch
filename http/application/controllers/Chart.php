@@ -29,6 +29,16 @@ class Chart extends CI_Controller {
                     );
                 }
                 break;
+            case '2':
+                $sDate = $this->input->get('start_date');
+                $eDate = $this->input->get('end_date');
+                $sellerId = $this->input->get('seller_id');
+                if ($sDate && $eDate && $sellerId) {
+                    echo json_encode(
+                        $this->charts->getChartData2($sDate, $eDate, $sellerId)
+                    );
+                }
+                break;
         }
     }
 
@@ -40,5 +50,10 @@ class Chart extends CI_Controller {
     public function getListServices()
     {
         echo json_encode($this->charts->getListServices());
+    }
+
+    public function getSellers()
+    {
+        echo json_encode($this->charts->getSellers());
     }
 }

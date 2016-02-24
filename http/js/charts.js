@@ -1,4 +1,5 @@
 $(function () {
+    var dateRangeType = 'day';
     var chart = [null, null, null, null];
     var ajax = JSON.parse($.ajax({
         url: "index.php/Chart/getMaxDate",
@@ -29,7 +30,7 @@ $(function () {
         );
     });
 
-    $("#range-month").datepicker({
+    $("#range-month, #range-month2").datepicker({
         changeMonth: true,
         changeYear: true,
         changeDay: false,
@@ -41,8 +42,8 @@ $(function () {
             $(this).val((cur_date.getMonth() + 1) + '/' + cur_date.getFullYear());
         }
     });
-    $("#range-month").datepicker('setDate', new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate(), 0, 0, 0, 0));
-    $("#range-month").val((cur_date.getMonth() + 1) + '/' + cur_date.getFullYear());
+    $("#range-month, #range-month2").datepicker('setDate', new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate(), 0, 0, 0, 0));
+    $("#range-month, #range-month2").val((cur_date.getMonth() + 1) + '/' + cur_date.getFullYear());
 
     $("#range-month").on('change', function(){
         cur_date = new Date(Date.parse($(this).datepicker('getDate')));
@@ -51,6 +52,17 @@ $(function () {
         chartAjaxLoad[0](
             start_date.getFullYear() + '-' + ((start_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (start_date.getMonth() + 1) + '-' + (start_date.getDate().toString().length < 2 ? '0' : '' ) + start_date.getDate() + ' 00:00:00',
             end_date.getFullYear() + '-' + ((end_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (end_date.getMonth() + 1) + '-' + (end_date.getDate().toString().length < 2 ? '0' : '' ) + end_date.getDate() + ' 23:59:59'
+        );
+    });
+
+    $("#range-month2").on('change', function(){
+        cur_date = new Date(Date.parse($(this).datepicker('getDate')));
+        start_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), 1, 0, 0, 0, 0);
+        end_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), new Date(cur_date.getFullYear(), cur_date.getMonth()+1, 0).getDate(), 23, 59, 59, 0);
+        chartAjaxLoad[1](
+            start_date.getFullYear() + '-' + ((start_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (start_date.getMonth() + 1) + '-' + (start_date.getDate().toString().length < 2 ? '0' : '' ) + start_date.getDate() + ' 00:00:00',
+            end_date.getFullYear() + '-' + ((end_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (end_date.getMonth() + 1) + '-' + (end_date.getDate().toString().length < 2 ? '0' : '' ) + end_date.getDate() + ' 23:59:59',
+            $('[name="seller_id"]').val()
         );
     });
 
@@ -68,31 +80,32 @@ $(function () {
         var params = {};
         var series = [];
         var xAxis = [];
-
         var services = JSON.parse($.ajax({
             url: "index.php/Chart/getListServices",
             async: false,
             dataType: 'json'
         }).responseText);
 
-        for (i in services) {
-            series[services[i]['id']] = {
-                name: services[i]['name'],
-                data: data[i],
-                visible: false
-            }
-        }
-
-        series[0] = {
-            name: 'Продажи по всем услугам',
-            data: data[0]
-        }
-        for (i in data[0]) {
-            xAxis.push(data[0][i].name);
-        }
-
         switch (id) {
             case 0:
+            case 1:
+            case 2:
+                for (i in services) {
+                    series[services[i]['id']] = {
+                        name: services[i]['name'],
+                        data: data[i],
+                        visible: false
+                    }
+                }
+
+                series[0] = {
+                    name: 'Продажи по всем услугам',
+                    data: data[0]
+                }
+                for (i in data[0]) {
+                    xAxis.push(data[0][i].name);
+                }
+
                 params = {
                     chart: {
                         renderTo: 'chart1',
@@ -159,11 +172,13 @@ $(function () {
                                     start_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), 1, 0, 0, 0, 0);
                                     end_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), new Date(cur_date.getFullYear(), cur_date.getMonth()+1, 0).getDate(), 23, 59, 59, 0);
                                     $('#settings>[name="chart2"]').css('display', '');
+                                    dateRangeType = 'month';
                                 }   
                                 if (event.rangeSelectorButton.type == 'day') {
                                     start_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate(), 0, 0, 0, 0);
                                     end_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate(), 23, 59, 59, 0);
                                     $('#settings>[name="chart1"]').css('display', '');
+                                    dateRangeType = 'day';
                                 }
                                 chartAjaxLoad[0](
                                     start_date.getFullYear() + '-' + ((start_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (start_date.getMonth() + 1) + '-' + (start_date.getDate().toString().length < 2 ? '0' : '' ) + start_date.getDate() + ' 00:00:00',
@@ -180,6 +195,62 @@ $(function () {
                     }
                 }
                 break;
+            case 3:
+                for (i in data) {
+                    series[i] = {
+                        name: 'Категория',
+                        colorByPoint: true,
+                        data: data[i]
+                    }
+                }
+                params = {
+                    chart: {
+                        renderTo: 'chart4',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'График продаж продавца в течение месяца – суммарно и по группам услуг'
+                    },
+                    tooltip: {
+                        pointFormat: 'Процент от всех продаж: <b>{point.percentage:.1f}%</b><br>Продажи: <b>{point.y} рублей</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true,
+                            point: {
+                                events: {
+                                    legendItemClick: function (event) {
+                                        var series = chart[3].series;
+                                        if (this.type == 'total' && event.target.index == 0) {
+                                            series[1].hide();
+                                            series[0].show();
+                                        } else {
+                                            series[0].hide();
+                                            series[1].show();
+                                            //return true;
+                                        }
+                                        chart[3].xAxis[0].setCategories([1, 2])
+                                    },
+                                    afterAnimate: function (event) {
+                                        //chart[id].rangeSelector.select(0);
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    series: series
+                }
+                console.log(series);
+                break;
+
         }
         chart[id] = new Highcharts.Chart(params);
     }
@@ -217,8 +288,97 @@ $(function () {
                     initChart(0, forChart);
                 }
             });
+        },
+        function(s_date, e_date, seller_id){
+            $.ajax({
+                type: 'GET',
+                url: 'index.php/Chart/get/2',
+                data: {
+                    'start_date': s_date,
+                    'end_date': e_date,
+                    'seller_id': seller_id
+                },
+                dataType: 'json',
+                success: function(data){
+                    var forChart = [];
+                    var forChart2 = [];
+                    for (i in data) {
+                        if (i == 0) {
+                            forChart[i] = {
+                                'name': data[i].name,
+                                'color': '#aa2222',
+                                'type': 'total',
+                                'y': parseFloat(data[i]['sells'].toString().replace(/,/g, ''))
+                            }
+                        } else {
+                            forChart2[i - 1] = {
+                                'name': data[i].name,
+                                'y': parseFloat(data[i]['sells'].toString().replace(/,/g, ''))
+                            }
+                        }
+                    }
+                    initChart(3, [forChart, forChart2]);
+                }
+            });
         }
     ]
+
+    $('[name="seller_id"]').on('change', function() {
+        chartAjaxLoad[1](
+            start_date.getFullYear() + '-' + ((start_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (start_date.getMonth() + 1) + '-' + (start_date.getDate().toString().length < 2 ? '0' : '' ) + start_date.getDate() + ' 00:00:00',
+            end_date.getFullYear() + '-' + ((end_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (end_date.getMonth() + 1) + '-' + (end_date.getDate().toString().length < 2 ? '0' : '' ) + end_date.getDate() + ' 23:59:59',
+            $(this).val()
+        );
+    });
+
+    $('#button-toggle-chart').on('click', function() {
+        $('#settings>div').each(function(index, obj) {
+            $(obj).css('display', 'none');
+        })
+        if ($(this).data('frameid') == 1) {
+            start_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), 1, 0, 0, 0, 0);
+            end_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), new Date(cur_date.getFullYear(), cur_date.getMonth()+1, 0).getDate(), 23, 59, 59, 0);
+            $('#chart1').css('display', 'none');
+            $('#chart4').css('display', '');
+            $('#settings>[name="chart4"]').css('display', '');
+            $(this).data('frameid', 3);
+            chartAjaxLoad[1](
+                start_date.getFullYear() + '-' + ((start_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (start_date.getMonth() + 1) + '-' + (start_date.getDate().toString().length < 2 ? '0' : '' ) + start_date.getDate() + ' 00:00:00',
+                end_date.getFullYear() + '-' + ((end_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (end_date.getMonth() + 1) + '-' + (end_date.getDate().toString().length < 2 ? '0' : '' ) + end_date.getDate() + ' 23:59:59',
+                $('[name="seller_id"]').val()
+            );
+        } else {
+            if (dateRangeType == 'month') {
+                start_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), 1, 0, 0, 0, 0);
+                end_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), new Date(cur_date.getFullYear(), cur_date.getMonth()+1, 0).getDate(), 23, 59, 59, 0);
+            } else {
+                start_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate(), 0, 0, 0, 0);
+                end_date = new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate(), 23, 59, 59, 0);
+            }
+            $('#chart4').css('display', 'none');
+            $('#chart1').css('display', '');
+            $('#settings>[name="chart1"]').css('display', '');
+            $(this).data('frameid', 1);
+            chartAjaxLoad[0](
+                start_date.getFullYear() + '-' + ((start_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (start_date.getMonth() + 1) + '-' + (start_date.getDate().toString().length < 2 ? '0' : '' ) + start_date.getDate() + ' 00:00:00',
+                end_date.getFullYear() + '-' + ((end_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (end_date.getMonth() + 1) + '-' + (end_date.getDate().toString().length < 2 ? '0' : '' ) + end_date.getDate() + ' 23:59:59'
+            );
+        }
+    })
+
+    $.ajax({
+        type: 'GET',
+        url: 'index.php/Chart/getSellers',
+        dataType: 'json',
+        success: function(data){
+            var strToPrepend = '';
+            for (i in data) {
+                strToPrepend += '<option value="' + data[i]['id'] + '">' + data[i]['FIO'] + '</option>';
+            }
+            $('[name="seller_id"]').prepend(strToPrepend);
+        }
+    });
+
 
     chartAjaxLoad[0](
         start_date.getFullYear() + '-' + ((start_date.getMonth() + 1).toString().length < 2 ? '0' : '' ) + (start_date.getMonth() + 1) + '-' + (start_date.getDate().toString().length < 2 ? '0' : '' ) + start_date.getDate() + ' 00:00:00',
