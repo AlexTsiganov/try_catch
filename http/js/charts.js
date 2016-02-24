@@ -68,6 +68,11 @@ $(function () {
 
 
     function initChart(id, data) {
+        if (data[0].length < 1 && data.length < 2) {
+            for (i in chart[id].series) {
+                chart[id].series[i].setData([[]], false);
+            }
+        }
         data = data || null;
         if (chart[id] !== undefined && chart[id] !== null) {
             for (i in data) {
@@ -110,7 +115,9 @@ $(function () {
                     chart: {
                         renderTo: 'chart1',
                         type: 'column',
-                        margin: 100,
+                        marginTop: 100,
+                        marginBottom: 300,
+                        height: 700,
                         options3d: {
                             enabled: true,
                             alpha: 0,
@@ -124,6 +131,17 @@ $(function () {
                     },
                     subtitle: {
                         text: 'графики 1, 2 и 3'
+                    },
+                    legend: {
+                        align: 'left',
+                        verticalAlign: 'bottom',
+                        y: 50,
+                        padding: 20,
+                        itemMarginTop: 5,
+                        itemMarginBottom: 5,
+                        itemStyle: {
+                            lineHeight: '14px'
+                        }
                     },
                     plotOptions: {
                         column: {
